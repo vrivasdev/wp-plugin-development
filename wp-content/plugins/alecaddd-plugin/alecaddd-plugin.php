@@ -32,3 +32,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 Copyright (C) 2005-2018  Víctor Rivas
 */
+
+/*if ( !defined('ABSPATH') ) { // if something external try to enter "ABSPATH" is not going to be defined
+	die;
+}*/
+
+defined('ABSPATH') or die('Hey, you can\'t access this file!');
+
+/*if ( !function_exists( 'add_action' ) ) { // wp didn't start
+	echo 'Hey, you can\'t access this file!';
+	exit;
+}*/
