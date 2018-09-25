@@ -33,13 +33,45 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 Copyright (C) 2005-2018  Víctor Rivas
 */
 
-/*if ( !defined('ABSPATH') ) { // if something external try to enter "ABSPATH" is not going to be defined
-	die;
-}*/
+/*	Note: Another two different ways to use the "ABSPATH" constant
+	if ( !defined('ABSPATH') ) { // if something external try to enter "ABSPATH" is not going to be defined
+		die;
+	}
+
+	if ( !function_exists( 'add_action' ) ) { // wp didn't start
+		echo 'Hey, you can\'t access this file!';
+		exit;
+	}
+
+*/
 
 defined('ABSPATH') or die('Hey, you can\'t access this file!');
 
-/*if ( !function_exists( 'add_action' ) ) { // wp didn't start
-	echo 'Hey, you can\'t access this file!';
-	exit;
-}*/
+class AlecadddPlugin 
+{
+	function activate() {
+		// generate a CPT
+		// flush rewrite rules
+	}
+
+	function deactivate() {
+		// flush the rewrite rules
+	}
+
+	function uninstall() {
+		// delete CPT
+		// delete all the plugin data from the DB
+	}
+}
+
+if ( class_exists('AlecadddPlugin') ) {
+	$alecadddPlugin = new AlecadddPlugin();
+}
+
+// activation
+register_activation_hook( __FILE__, array( $alecadddPlugin, 'activate ' ) );
+
+// deactivation
+register_activation_hook( __FILE__, array( $alecadddPlugin, 'deactivate ' ) );
+
+// uninstall
