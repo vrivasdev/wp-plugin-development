@@ -50,11 +50,15 @@ defined('ABSPATH') or die('Hey, you can\'t access this file!');
 class AlecadddPlugin 
 {
 	function __construct() {
-		add_action( 'init', [ $this, 'custom_post_type' ] );
+		$this->create_post_type();
 	}
 
 	function register() {
 		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue'] );
+	}
+
+	protected function create_post_type() {
+		add_action( 'init', [ $this, 'custom_post_type' ] );
 	}
 
 	function activate() {
