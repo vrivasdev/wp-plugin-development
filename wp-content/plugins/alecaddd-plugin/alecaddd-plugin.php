@@ -49,9 +49,15 @@ defined('ABSPATH') or die('Hey, you can\'t access this file!');
 
 class AlecadddPlugin 
 {
+	function __construct() {
+		add_action( 'init', [ $this, 'custom_post_type' ] );
+	}
+
 	function activate() {
 		// generate a CPT
+		$this->custom_post_type();
 		// flush rewrite rules
+		flush_rewrite_rules(); // flush DB
 	}
 
 	function deactivate() {
@@ -62,6 +68,10 @@ class AlecadddPlugin
 		// delete CPT
 		// delete all the plugin data from the DB
 	}
+
+	function custom_post_type() {
+		register_post_type( 'book', ['public' => true, 'label' => 'Books'] );
+	}
 }
 
 if ( class_exists('AlecadddPlugin') ) {
@@ -69,9 +79,9 @@ if ( class_exists('AlecadddPlugin') ) {
 }
 
 // activation
-register_activation_hook( __FILE__, array( $alecadddPlugin, 'activate ' ) );
+register_activation_hook( __FILE__, [ $alecadddPlugin, 'activate' ] );
 
 // deactivation
-register_activation_hook( __FILE__, array( $alecadddPlugin, 'deactivate ' ) );
+register_deactivation_hook( __FILE__, [ $alecadddPlugin, 'deactivate' ] );
 
 // uninstall
