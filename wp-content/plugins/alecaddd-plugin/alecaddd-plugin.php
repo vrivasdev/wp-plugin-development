@@ -47,54 +47,52 @@ Copyright (C) 2005-2018  Víctor Rivas
 
 defined('ABSPATH') or die('Hey, you can\'t access this file!');
 
-class AlecadddPlugin 
-{
-	function __construct() {
-		$this->create_post_type();
-	}
+if ( !class_exists('AlecadddPlugin') ) {
 
-	function register() {
-		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue'] );
-	}
+	class AlecadddPlugin 
+	{
+		function register() {
+			// add_action( 'admin_enqueue_scripts', [ $this, 'enqueue'] ); // Object initialization
+			add_action( 'admin_enqueue_scripts', [ 'AlecadddPlugin', 'enqueue'] ); // Static method way
+		}
 
-	protected function create_post_type() {
-		add_action( 'init', [ $this, 'custom_post_type' ] );
-	}
+		protected function create_post_type() {
+			add_action( 'init', [ $this, 'custom_post_type' ] );
+		}
 
-	function activate() {
-		// generate a CPT
-		$this->custom_post_type();
-		// flush rewrite rules
-		flush_rewrite_rules(); // flush DB
-	}
+		function activate() {
+			
+			//$this->custom_post_type(); // Create CPT
+			require_once plugin_dir_path( __FILE__ ) . 'inc/alecaddd-plugin-activate.php';			
+			AlecadddPluginActivate::activate();			
+		}
 
-	function deactivate() {
-		// flush the rewrite rules
-	}
+		function deactivate() {
+			// flush the rewrite rules
+		}
 
-	function custom_post_type() {
-		register_post_type( 'book', ['public' => true, 'label' => 'Books'] );
-	}
+		function custom_post_type() {
+			register_post_type( 'book', ['public' => true, 'label' => 'Books'] );
+		}
 
-	function enqueue() {
-		// enqueue all our scripts
-		wp_enqueue_style( 'mypluginstyle', plugins_url( '/assets/mystyle.css', __FILE__ ) );
-		wp_enqueue_script( 'mypluginscript', plugins_url( '/assets/myscript.js', __FILE__ ) );
+		static function enqueue() {
+			// enqueue all our scripts
+			wp_enqueue_style( 'mypluginstyle', plugins_url( '/assets/mystyle.css', __FILE__ ) );
+			wp_enqueue_script( 'mypluginscript', plugins_url( '/assets/myscript.js', __FILE__ ) );
+		}
 	}
-}
-
-if ( class_exists('AlecadddPlugin') ) {
 
 	$alecadddPlugin = new AlecadddPlugin();
 	$alecadddPlugin->register();
-
+	// AlecadddPlugin::register();
 }
 
 // activation
 register_activation_hook( __FILE__, [ $alecadddPlugin, 'activate' ] );
 
 // deactivation
-register_deactivation_hook( __FILE__, [ $alecadddPlugin, 'deactivate' ] );
+require_once plugin_dir_path( __FILE__ ) . 'inc/alecaddd-plugin-deactivate.php';
+register_deactivation_hook( __FILE__, [ 'AlecadddPluginDeactivate', 'deactivate' ] );
 
 // uninstall
 //register_uninstall_hook( __FILE__, [ $alecadddPlugin, 'uninstall' ] );
