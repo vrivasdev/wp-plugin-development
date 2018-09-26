@@ -64,11 +64,6 @@ class AlecadddPlugin
 		// flush the rewrite rules
 	}
 
-	function uninstall() {
-		// delete CPT
-		// delete all the plugin data from the DB
-	}
-
 	function custom_post_type() {
 		register_post_type( 'book', ['public' => true, 'label' => 'Books'] );
 	}
@@ -85,3 +80,4 @@ register_activation_hook( __FILE__, [ $alecadddPlugin, 'activate' ] );
 register_deactivation_hook( __FILE__, [ $alecadddPlugin, 'deactivate' ] );
 
 // uninstall
+register_uninstall_hook( __FILE__, [ $alecadddPlugin, 'uninstall' ] );
