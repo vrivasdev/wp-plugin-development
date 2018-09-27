@@ -47,6 +47,14 @@ Copyright (C) 2005-2018  Víctor Rivas
 
 defined('ABSPATH') or die('Hey, you can\'t access this file!');
 
+if ( file_exists( dirname( __FILE__ ) . '/vendor/autoload.php' ) ) {
+	require_once dirname( __FILE__ ) . '/vendor/autoload.php';
+}
+
+use Inc\Activate;
+use Inc\Deactivate;
+use Inc\Admin\AdminPages;
+
 if ( !class_exists('AlecadddPlugin') ) {
 
 	class AlecadddPlugin 
@@ -58,8 +66,7 @@ if ( !class_exists('AlecadddPlugin') ) {
 			$this->plugin = plugin_basename( __FILE__ );			
 		}
 
-		function register() {
-			//add_action( 'admin_enqueue_scripts', [ 'AlecadddPlugin', 'enqueue'] ); // Static method way
+		function register() {			
 			add_action( 'admin_enqueue_scripts', [ $this, 'enqueue'] ); // Object initialization
 			add_action( 'admin_menu', [ $this, 'add_admin_pages'] );			
 
@@ -86,10 +93,8 @@ if ( !class_exists('AlecadddPlugin') ) {
 			add_action( 'init', [ $this, 'custom_post_type' ] );
 		}
 
-		function activate() {			
-			//$this->custom_post_type(); // Create CPT
-			require_once plugin_dir_path( __FILE__ ) . 'inc/alecaddd-plugin-activate.php';			
-			AlecadddPluginActivate::activate();			
+		function activate() {						
+			Activate::activate();			
 		}
 
 		function custom_post_type() {
@@ -104,16 +109,11 @@ if ( !class_exists('AlecadddPlugin') ) {
 	}
 
 	$alecadddPlugin = new AlecadddPlugin();
-	$alecadddPlugin->register();
-	// AlecadddPlugin::register(); // static way
+	$alecadddPlugin->register();	
 }
 
 // activation
 register_activation_hook( __FILE__, [ $alecadddPlugin, 'activate' ] );
 
 // deactivation
-require_once plugin_dir_path( __FILE__ ) . 'inc/alecaddd-plugin-deactivate.php';
-register_deactivation_hook( __FILE__, [ 'AlecadddPluginDeactivate', 'deactivate' ] );
-
-// uninstall
-//register_uninstall_hook( __FILE__, [ $alecadddPlugin, 'uninstall' ] );
+register_deactivation_hook( __FILE__, [ 'Deactivate', 'deactivate' ] );
