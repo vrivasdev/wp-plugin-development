@@ -3,7 +3,7 @@
 /**
 * @package AlecaddPlugin
 */
-namespace Inc;
+namespace Inc\Base;
 
 class Activate
 {
