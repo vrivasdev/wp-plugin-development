@@ -6,7 +6,9 @@ namespace Inc\Pages;
 * @package AlecaddPlugin
 */
 
-class Admin
+use \Inc\Base\BaseController;
+
+class Admin extends BaseController
 {
 	public function register() 
 	{
@@ -20,7 +22,7 @@ class Admin
 
 	public function admin_index() 
 	{		
-		require_once PLUGIN_PATH . 'templates/admin.php';	
+		require_once $this->plugin_path . 'templates/admin.php';
 
 	}
 }
