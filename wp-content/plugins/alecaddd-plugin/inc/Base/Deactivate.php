@@ -3,7 +3,6 @@
 /**
 * @package AlecaddPlugin
 */
-
 namespace Inc\Base;
 
 class Deactivate 

@@ -16,6 +16,7 @@ final class Init // 'final': Class isn't extensible
 		return [
 			Pages\Admin::class,
 			Base\Enqueue::class,
+			Base\SettingsLinks::class,
 		];
 	}
 
