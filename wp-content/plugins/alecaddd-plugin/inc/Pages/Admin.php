@@ -1,36 +1,53 @@
 <?php 
-
-namespace Inc\Pages;
-
 /**
 * @package AlecaddPlugin
 */
+namespace Inc\Pages;
 
-use \Inc\Base\BaseController;
 use \Inc\Api\SettingsApi;
-
+use \Inc\Base\BaseController;
+use \Inc\Api\Callbacks\AdminCallbacks;
 
 class Admin extends BaseController
 {
 	public $settings;
+	public $callbacks;
 	public $pages    = [];
 	public $subpages = [];
 
-	public function __construct() 
-	{
+	public function register() 
+	{		
 		$this->settings = new SettingsApi();
+
+		$this->callbacks = new AdminCallbacks();
+
+		$this->setPages();
+
+		$this->setSubpages();
+
+		$this->settings->addPages( $this->pages )
+		               ->withSubPage( 'Dashboard' )
+		               ->addSubPages( $this->subpages )
+		               ->register();
+	}
+
+	public function setPages()
+	{
 		$this->pages = [
 			[
 				'page_title' => 'Alecaddd Plugin',
 				'menu_title' => 'Alecaddd', 
 				'capability' => 'manage_options', 
 				'menu_slug'  => 'alecaddd-plugin',
-				'callback'   => function() { echo '<h1>Alecaddd Plugin</h1>';},
+				'callback'   => [ $this->callbacks, 'adminDashboard' ], // It's an approach that wordpress require
 				'icon_url'   => 'dashicons-store',
 				'position'   => 110
 			]
 		];
-		
+	}
+
+	public function setSubpages()
+	{
 		$this->subpages = [
 			[
 				'parent_slug' => 'alecaddd-plugin',
@@ -57,13 +74,5 @@ class Admin extends BaseController
 				'callback'    => function() { echo '<h1>Widget Manager</h1>';}
 			]
 		];
-	}
-
-	public function register() 
-	{		
-		$this->settings->addPages( $this->pages )
-		               ->withSubPage( 'Dashboard' )
-		               ->addSubPages( $this->subpages )
-		               ->register();
 	}
 }
