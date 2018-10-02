@@ -40,7 +40,13 @@ class AdminCallbacks extends BaseController
 
 	public function alecadddTextExample()
 	{
-		$value = esc_attr( get_option( 'text_example' ) );
+		$value = esc_attr( get_option( 'text_example' ) );// it comes from the "setSettings" method
 		echo '<input type="text" class="regular-text" name="text_example" value="'.$value.'" placeholder="Write something here">';
+	}
+
+	public function alecadddFirstName()
+	{
+		$value = esc_attr( get_option( 'first_name' ) );// it comes from the "setSettings" method
+		echo '<input type="text" class="regular-text" name="first_name" value="'.$value.'" placeholder="Write your firt name">';
 	}
 }

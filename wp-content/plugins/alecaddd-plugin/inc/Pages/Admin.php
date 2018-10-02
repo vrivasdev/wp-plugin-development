@@ -7,7 +7,9 @@ namespace Inc\Pages;
 use \Inc\Api\SettingsApi;
 use \Inc\Base\BaseController;
 use \Inc\Api\Callbacks\AdminCallbacks;
-
+/**
+ * 
+ */
 class Admin extends BaseController
 {
 	public $settings;
@@ -84,11 +86,16 @@ class Admin extends BaseController
 
 	public function setSettings()
 	{		
+		// Note: Add a new settings and field row to set a new text field
 		$this->settings->setSettings( [
 			[
 				'option_group' => 'alecaddd_options_group',
 				'option_name'  => 'text_example',
-				'callback'     => [ $this->callbacks, 'alecadddOptionsGroup' ]
+				'callback'     => [ $this->callbacks, 'alecadddOptionsGroup' ]// optional
+			],
+			[
+				'option_group' => 'alecaddd_options_group',
+				'option_name'  => 'first_name'
 			]
 		] );
 	}
@@ -116,6 +123,17 @@ class Admin extends BaseController
 				'section'  => 'alecaddd_admin_index',
 				'args' => [
 					'label_for' => 'text_example',
+					'class'     => 'example-class'
+				]
+			],
+			[
+				'id'       => 'first_name',
+				'title'    => 'First name',
+				'callback' => [ $this->callbacks, 'alecadddFirstName' ],
+				'page'     => 'alecaddd-plugin',
+				'section'  => 'alecaddd_admin_index',
+				'args' => [
+					'label_for' => 'first_name',
 					'class'     => 'example-class'
 				]
 			]

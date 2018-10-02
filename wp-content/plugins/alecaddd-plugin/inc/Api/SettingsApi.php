@@ -19,7 +19,7 @@ class SettingsApi
 			add_action( 'admin_menu', [ $this, 'addAdminMenu'] );
 		}
 
-		if ( !empty( $this->settgins ) ) {
+		if ( !empty( $this->settings ) ) {
 			add_action( 'admin_init', [ $this, 'registerCustomFields' ] );
 		}
 	}
@@ -103,13 +103,15 @@ class SettingsApi
 		// add settings section
 		foreach ( $this->sections as $section ) {
 			add_settings_section( $section['id'], $section['title'], 
-				                ( isset( $setting['callback'] ) ? $setting['callback'] : '' ), $section['page'] );
+				                ( isset( $section['callback'] ) ? $section['callback'] : '' ), 
+				                  $section['page'] );
 		}
 		// add settings fields
 		foreach ( $this->fields as $field ) {
 			add_settings_field( $field['id'], $field['title'], 
-			              ( isset( $setting['callback'] ) ? $setting['callback'] : '' ), 
-			                $field['page'], $field['section'], ( isset( $field['args'] ) ? $field['args'] : '' ) );
+			              ( isset( $field['callback'] ) ? $field['callback'] : '' ), 
+			                $field['page'], $field['section'], 
+			              ( isset( $field['args'] ) ? $field['args'] : '' ) );
 		}					
 	}
 }
