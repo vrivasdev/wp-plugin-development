@@ -25,6 +25,12 @@ class Admin extends BaseController
 
 		$this->setSubpages();
 
+		$this->setSettings();
+
+		$this->setSections();
+
+		$this->setFields();
+
 		$this->settings->addPages( $this->pages )
 		               ->withSubPage( 'Dashboard' )
 		               ->addSubPages( $this->subpages )
@@ -39,7 +45,7 @@ class Admin extends BaseController
 				'menu_title' => 'Alecaddd', 
 				'capability' => 'manage_options', 
 				'menu_slug'  => 'alecaddd-plugin',
-				'callback'   => [ $this->callbacks, 'adminDashboard' ], // It's an approach that wordpress require
+				'callback'   => [ $this->callbacks, 'adminDashboard' ], // WP callback
 				'icon_url'   => 'dashicons-store',
 				'position'   => 110
 			]
@@ -55,7 +61,7 @@ class Admin extends BaseController
 				'menu_title'  => 'CPT', 
 				'capability'  => 'manage_options', 
 				'menu_slug'   => 'alecaddd_cpt',
-				'callback'    => function() { echo '<h1>CPT Manager</h1>';}
+				'callback'    => [ $this->callbacks, 'adminCPT' ] // WP callback
 			],
 			[
 				'parent_slug' => 'alecaddd-plugin',
@@ -63,7 +69,7 @@ class Admin extends BaseController
 				'menu_title'  => 'Taxonomies', 
 				'capability'  => 'manage_options', 
 				'menu_slug'   => 'alecaddd-taxonomies',
-				'callback'    => function() { echo '<h1>Taxonomies Manager</h1>';}
+				'callback'    => [ $this->callbacks, 'adminTaxonomy' ] // WP callback
 			],
 			[
 				'parent_slug' => 'alecaddd-plugin',
@@ -71,8 +77,48 @@ class Admin extends BaseController
 				'menu_title'  => 'Widgets', 
 				'capability'  => 'manage_options', 
 				'menu_slug'   => 'alecaddd-widgets',
-				'callback'    => function() { echo '<h1>Widget Manager</h1>';}
+				'callback'    => [ $this->callbacks, 'adminWidget' ] // WP callback
 			]
 		];
+	}
+
+	public function setSettings()
+	{		
+		$this->settings->setSettings( [
+			[
+				'option_group' => 'alecaddd_options_group',
+				'option_name'  => 'text_example',
+				'callback'     => [ $this->callbacks, 'alecadddOptionsGroup' ]
+			]
+		] );
+	}
+
+	public function setSections()
+	{	
+		$this->settings->setSections( [
+			[
+				'id'       => 'alecaddd_admin_index',
+				'title'    => 'Settings',
+				'callback' => [ $this->callbacks, 'alecadddAdminSection' ],
+				'page'     => 'alecaddd-plugin'
+			]
+		] );
+	}
+
+	public function setFields()
+	{	
+		$this->settings->setFields( [
+			[
+				'id'       => 'text_example',
+				'title'    => 'Text Example',
+				'callback' => [ $this->callbacks, 'alecadddTextExample' ],
+				'page'     => 'alecaddd-plugin',
+				'section'  => 'alecaddd_admin_index',
+				'args' => [
+					'label_for' => 'text_example',
+					'class'     => 'example-class'
+				]
+			]
+		] );
 	}
 }
