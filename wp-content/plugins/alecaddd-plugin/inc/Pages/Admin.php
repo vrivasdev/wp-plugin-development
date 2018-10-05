@@ -7,6 +7,7 @@ namespace Inc\Pages;
 use \Inc\Api\SettingsApi;
 use \Inc\Base\BaseController;
 use \Inc\Api\Callbacks\AdminCallbacks;
+use \Inc\Api\Callbacks\ManagerCallbacks;
 /**
  * 
  */
@@ -14,6 +15,7 @@ class Admin extends BaseController
 {
 	public $settings;
 	public $callbacks;
+	public $callbacks_mngr;
 	public $pages    = [];
 	public $subpages = [];
 
@@ -22,6 +24,8 @@ class Admin extends BaseController
 		$this->settings = new SettingsApi();
 
 		$this->callbacks = new AdminCallbacks();
+
+		$this->callbacks_mngr = new ManagerCallbacks();
 
 		$this->setPages();
 
@@ -89,13 +93,49 @@ class Admin extends BaseController
 		// Note: Add a new settings and field row to set a new text field
 		$this->settings->setSettings( [
 			[
-				'option_group' => 'alecaddd_options_group',
-				'option_name'  => 'text_example',
-				'callback'     => [ $this->callbacks, 'alecadddOptionsGroup' ]// optional
+				'option_group' => 'alecaddd_plugin_settings',
+				'option_name'  => 'cpt_manager',
+				'callback'     => [ $this->callbacks_mngr, 'checkboxSanitize' ]
 			],
 			[
-				'option_group' => 'alecaddd_options_group',
-				'option_name'  => 'first_name'
+				'option_group' => 'alecaddd_plugin_settings',
+				'option_name'  => 'taxonomy_manager',
+				'callback'     => [ $this->callbacks_mngr, 'checkboxSanitize' ]
+			],
+			[
+				'option_group' => 'alecaddd_plugin_settings',
+				'option_name'  => 'media_widget',
+				'callback'     => [ $this->callbacks_mngr, 'checkboxSanitize' ]
+			],
+			[
+				'option_group' => 'alecaddd_plugin_settings',
+				'option_name'  => 'gallery_manager',
+				'callback'     => [ $this->callbacks_mngr, 'checkboxSanitize' ]
+			],
+			[
+				'option_group' => 'alecaddd_plugin_settings',
+				'option_name'  => 'testimonial_manager',
+				'callback'     => [ $this->callbacks_mngr, 'checkboxSanitize' ]
+			],
+			[
+				'option_group' => 'alecaddd_plugin_settings',
+				'option_name'  => 'templates_manager',
+				'callback'     => [ $this->callbacks_mngr, 'checkboxSanitize' ]
+			],
+			[
+				'option_group' => 'alecaddd_plugin_settings',
+				'option_name'  => 'login_manager',
+				'callback'     => [ $this->callbacks_mngr, 'checkboxSanitize' ]
+			],
+			[
+				'option_group' => 'alecaddd_plugin_settings',
+				'option_name'  => 'membership_manager',
+				'callback'     => [ $this->callbacks_mngr, 'checkboxSanitize' ]
+			],
+			[
+				'option_group' => 'alecaddd_plugin_settings',
+				'option_name'  => 'chat_manager',
+				'callback'     => [ $this->callbacks_mngr, 'checkboxSanitize' ]
 			]
 		] );
 	}
@@ -106,7 +146,7 @@ class Admin extends BaseController
 			[
 				'id'       => 'alecaddd_admin_index',
 				'title'    => 'Settings',
-				'callback' => [ $this->callbacks, 'alecadddAdminSection' ],
+				'callback' => [ $this->callbacks_mngr, 'adminSectionManager' ],
 				'page'     => 'alecaddd-plugin'
 			]
 		] );
@@ -116,25 +156,102 @@ class Admin extends BaseController
 	{	
 		$this->settings->setFields( [
 			[
-				'id'       => 'text_example',
-				'title'    => 'Text Example',
-				'callback' => [ $this->callbacks, 'alecadddTextExample' ],
+				'id'       => 'cpt_manager',
+				'title'    => 'Activate CPT Manager',
+				'callback' => [ $this->callbacks_mngr, 'checkboxField' ],
 				'page'     => 'alecaddd-plugin',
 				'section'  => 'alecaddd_admin_index',
 				'args' => [
-					'label_for' => 'text_example',
-					'class'     => 'example-class'
+					'label_for' => 'cpt_manager',
+					'class'     => 'ui-toggle'
 				]
 			],
 			[
-				'id'       => 'first_name',
-				'title'    => 'First name',
-				'callback' => [ $this->callbacks, 'alecadddFirstName' ],
+				'id'       => 'taxonomy_manager',
+				'title'    => 'Activate Taxonomy Manager',
+				'callback' => [ $this->callbacks_mngr, 'checkboxField' ],
 				'page'     => 'alecaddd-plugin',
 				'section'  => 'alecaddd_admin_index',
 				'args' => [
-					'label_for' => 'first_name',
-					'class'     => 'example-class'
+					'label_for' => 'taxonomy_manager',
+					'class'     => 'ui-toggle'
+				]
+			],
+			[
+				'id'       => 'media_widget',
+				'title'    => 'Activate Media Widget',
+				'callback' => [ $this->callbacks_mngr, 'checkboxField' ],
+				'page'     => 'alecaddd-plugin',
+				'section'  => 'alecaddd_admin_index',
+				'args' => [
+					'label_for' => 'media_widget',
+					'class'     => 'ui-toggle'
+				]
+			],
+			[
+				'id'       => 'gallery_manager',
+				'title'    => 'Activate Gallery Manager',
+				'callback' => [ $this->callbacks_mngr, 'checkboxField' ],
+				'page'     => 'alecaddd-plugin',
+				'section'  => 'alecaddd_admin_index',
+				'args' => [
+					'label_for' => 'gallery_manager',
+					'class'     => 'ui-toggle'
+				]
+			],
+			[
+				'id'       => 'testimonial_manager',
+				'title'    => 'Activate Testimonial Manager',
+				'callback' => [ $this->callbacks_mngr, 'checkboxField' ],
+				'page'     => 'alecaddd-plugin',
+				'section'  => 'alecaddd_admin_index',
+				'args' => [
+					'label_for' => 'testimonial_manager',
+					'class'     => 'ui-toggle'
+				]
+			],
+			[
+				'id'       => 'templates_manager',
+				'title'    => 'Activate Templates Manager',
+				'callback' => [ $this->callbacks_mngr, 'checkboxField' ],
+				'page'     => 'alecaddd-plugin',
+				'section'  => 'alecaddd_admin_index',
+				'args' => [
+					'label_for' => 'templates_manager',
+					'class'     => 'ui-toggle'
+				]
+			],
+			[
+				'id'       => 'login_manager',
+				'title'    => 'Activate Ajax Login/Signup',
+				'callback' => [ $this->callbacks_mngr, 'checkboxField' ],
+				'page'     => 'alecaddd-plugin',
+				'section'  => 'alecaddd_admin_index',
+				'args' => [
+					'label_for' => 'login_manager',
+					'class'     => 'ui-toggle'
+				]
+			],
+			[
+				'id'       => 'membership_manager',
+				'title'    => 'Activate Membership Manager',
+				'callback' => [ $this->callbacks_mngr, 'checkboxField' ],
+				'page'     => 'alecaddd-plugin',
+				'section'  => 'alecaddd_admin_index',
+				'args' => [
+					'label_for' => 'membership_manager',
+					'class'     => 'ui-toggle'
+				]
+			],
+			[
+				'id'       => 'chat_manager',
+				'title'    => 'Activate Chat Manager',
+				'callback' => [ $this->callbacks_mngr, 'checkboxField' ],
+				'page'     => 'alecaddd-plugin',
+				'section'  => 'alecaddd_admin_index',
+				'args' => [
+					'label_for' => 'chat_manager',
+					'class'     => 'ui-toggle'
 				]
 			]
 		] );
